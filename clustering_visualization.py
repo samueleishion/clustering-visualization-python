@@ -46,7 +46,7 @@ class Document:
 
 
 	def draw(self,win): 
-		self.p = Circle(Point(X-self.x,Y-self.y),3) 
+		self.p = Circle(Point(self.x,Y-self.y),3) 
 		self.p.setFill(self.color)
 		self.p.setOutline(color_rgb(255,255,255)) 
 		self.p.draw(win) 
@@ -61,14 +61,14 @@ class Category:
 		self.color = COLORS[self.id % len(COLORS)] 
 
 	def draw(self,win): 
-		self.p = Circle(Point(X-self.x,Y-self.y),7) 
+		self.p = Circle(Point(self.x,Y-self.y),7) 
 		self.p.setFill(self.color)
 		self.p.setOutline(color_rgb(0,0,0)) 
 		self.p.draw(win) 
 
 	def move(self,win): 
 		o = self.p.getCenter() 
-		q = Point(X-self.x,Y-self.y) 
+		q = Point(self.x,Y-self.y) 
 		line = Line(o,q) 
 		line.draw(win) 
 		self.draw(win) 
