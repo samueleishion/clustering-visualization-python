@@ -16,16 +16,34 @@ By default, the program will load 100 randomly placed documents and 2 randomly p
 
 #### Customize it 
 ```
-make DOCS=200 CATS=3 
+make demo DOCS=200 CATS=3 
 ```
 You can specify how many documents and categories (or centroids) to visualize. For example, this will test for 200 documents and 3 categories. 
+``` 
+make file FILE=data.txt 
+``` 
+You can also specify a file with data for visualization. The file structure is as follows: 
+
+```
+4
+123,234
+345,123
+...
+```
+The first line determines the number of categories, or centroids. after that, the program will look for coordinates points with domain and range of [0,500] separated with a comma and no spaces. 
+
+We provide 4 example files: data1.txt, data2.txt, data3.txt, and data4.txt.
 
 #### About making 
 ```
-make cluster 
-make cluster DOCS=400 CATS=7
+make demo 
+make demo DOCS=400 CATS=7
+make file FILE=data.txt
+make random
 ``` 
 These commands will specifically call for the cluster python program. 
+
+`make random` will create a randomly generated data.txt file. 
 
 ```
 make clean 

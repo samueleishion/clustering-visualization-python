@@ -98,9 +98,7 @@ class Category:
 
 def main(args): 
 	win = GraphWin("test",X,Y) 
-	protocol = args[1]
-
-	print "args0: "+args[1] 
+	protocol = args[1] 
 
 	if(protocol=="random"):
 
@@ -160,10 +158,10 @@ def main(args):
 			docs = [None for x in range(int(args[2]))] 
 			cats = [None for x in range(int(args[3]))] 
 
-			# create documents and centroids (categories) 
-			for i in range(len(docs)): 
-				docs[i] = Document(i) 
-				docs[i].draw(win) 
+		# create documents and centroids (categories) 
+		for i in range(len(docs)): 
+			docs[i] = Document(i) 
+			docs[i].draw(win) 
 
 	for i in range(len(cats)): 
 		cats[i] = Category(i) 
