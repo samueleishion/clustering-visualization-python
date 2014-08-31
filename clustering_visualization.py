@@ -15,18 +15,13 @@ from random import randint
 X = 500 
 Y = 500 
 
-COLORS = [ color_rgb(255,0,0), 
-			color_rgb(0,255,0), 
-			color_rgb(0,0,255), 
-			color_rgb(255,255,0), 
-			color_rgb(255,0,255), 
-			color_rgb(0,255,255), 
-			color_rgb(100,0,0), 
-			color_rgb(0,100,0), 
-			color_rgb(0,0,100), 
-			color_rgb(100,100,0), 
-			color_rgb(100,0,100), 
-			color_rgb(0,100,100) ]
+COLORS = [ color_rgb(227,74,51), 
+		   color_rgb(166,189,219),
+		   color_rgb(253,187,132),
+		   color_rgb(44,127,184),
+		   color_rgb(127,205,187),
+		   color_rgb(117,107,177), 
+		   color_rgb(28,144,153) ]
 
 def avg(nums): 
 	if(len(nums)==0):
@@ -103,18 +98,72 @@ class Category:
 
 def main(args): 
 	win = GraphWin("test",X,Y) 
-	try:
-		docs = [None for x in range(int(args[1]))] 
-		cats = [None for x in range(int(args[2]))] 
-	except IndexError: 
-		args = [args[0],50,2] 
-		docs = [None for x in range(int(args[1]))] 
-		cats = [None for x in range(int(args[2]))] 
+	protocol = args[1]
 
-	# create documents and centroids (categories) 
-	for i in range(len(docs)): 
-		docs[i] = Document(i) 
-		docs[i].draw(win) 
+	print "args0: "+args[1] 
+
+	if(protocol=="random"):
+
+		f = open('data.txt','w') 
+
+		f.write(str(randint(2, 7))+"\n") 
+
+		ranges = [58,49,34,25,49] 
+		# xbounds = [[25,240],[100,380],[200,420],[350,500],[70,440]]
+		# ybounds = [[90,499],[380,420],[200,400],[130,240],[20,189]] 
+		xbounds = [[25,140],[200,280],[300,320],[450,500],[40,440]]
+		ybounds = [[40,499],[380,420],[200,300],[130,240],[20,109]] 
+
+		for i in range(len(ranges)): 
+			for j in range(0,ranges[i]): 
+				x = randint(xbounds[i][0],xbounds[i][1]) 
+				y = randint(ybounds[i][0],ybounds[i][1]) 
+				f.write(str(x)+","+str(y)+"\n") 
+
+
+		f.close() 
+
+		return 
+
+	if(protocol=="file"):
+		# file
+		try: 
+			print args[2] 
+			f = open(args[2],'r') 
+			i = -1
+			
+			# create documents and centroids (categories) 
+			for line in f: 
+				line = line.rstrip() 
+				if(i==-1): 
+					cats = [None for x in range(int(line))] 
+					docs = [] 
+				else: 
+					s = line.split(',') 
+					docs.append(Document(i)) 
+					docs[i].x = int(s[0]) 
+					docs[i].y = int(s[1]) 
+					docs[i].draw(win) 
+				i += 1 
+			f.close() 
+
+		except Exception as e: 
+			print "there was an error" 
+			print e.args 
+	else: 
+		# demo 
+		try:
+			docs = [None for x in range(int(args[2]))] 
+			cats = [None for x in range(int(args[3]))] 
+		except IndexError: 
+			args = [args[0],50,2] 
+			docs = [None for x in range(int(args[2]))] 
+			cats = [None for x in range(int(args[3]))] 
+
+			# create documents and centroids (categories) 
+			for i in range(len(docs)): 
+				docs[i] = Document(i) 
+				docs[i].draw(win) 
 
 	for i in range(len(cats)): 
 		cats[i] = Category(i) 
