@@ -32,6 +32,9 @@ def avg(nums):
 		s += i 
 	return s/len(nums) 
 
+def dist_formula(x1,y1,x2,y2):
+	return sqrt((x1-x2)**2 + (y1-y2)**2) 
+
 class Document:
 	def __init__(self,id_num): 
 		self.x = randint(0,X) 
@@ -54,6 +57,7 @@ class Category:
 		self.distances = {} 
 		self.attributions = [] 
 		self.color = COLORS[self.id % len(COLORS)] 
+		self.delta = sys.maxint 
 
 	def draw(self,win): 
 		self.p = Circle(Point(self.x,Y-self.y),7) 
@@ -64,13 +68,16 @@ class Category:
 	def move(self,win): 
 		o = self.p.getCenter() 
 		q = Point(self.x,Y-self.y) 
+		self.delta = dist_formula(o.getX(),o.getY(),self.x,Y-self.y) 
+		print "delta("+str(self.id)+") = "+str(self.delta) 
 		line = Line(o,q) 
 		line.draw(win) 
 		self.draw(win) 
 
 
 	def dist(self,doc): 
-		d = sqrt((doc.x-self.x)**2 + (doc.y-self.y)**2) 
+		d = dist_formula(doc.x,doc.y,self.x,self.y) 
+		# d = sqrt((doc.x-self.x)**2 + (doc.y-self.y)**2) 
 		self.distances[doc.id] = d 
 
 	def attribute(self,doc): 
@@ -167,8 +174,9 @@ def main(args):
 		cats[i] = Category(i) 
 		cats[i].draw(win) 
 
+	avg_delta = sys.maxint
 	
-	for i in range(4): 
+	while avg_delta>=3: 
 		# calculate respective categorization 
 		for c in cats: 
 			c.distances = {} 
@@ -191,8 +199,14 @@ def main(args):
 				nominated[0].attribute(d) 
 
 		# reposition and recolor categories 
+		avg_delta = 0
 		for c in cats: 
 			c.repos(win) 
+			avg_delta = avg_delta+c.delta 
+		avg_delta /= len(cats) 
+
+		print "average delta: "+str(avg_delta)
+		print "=======================" 
 
 	print "DONE" 
 
